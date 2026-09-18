@@ -1,10 +1,16 @@
 package com.nullps1.copperworks.item;
 
 import com.nullps1.copperworks.Copperworks;
+import com.nullps1.copperworks.data.CopperEquipment;
+import java.util.function.Consumer;
+import javax.annotation.Nullable;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.HoeItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.item.SwordItem;
@@ -21,35 +27,60 @@ public final class ModItems {
         "copper_sword",
         properties -> new SwordItem(CopperToolTier.COPPER, properties.attributes(
             SwordItem.createAttributes(CopperToolTier.COPPER, 3, -2.4F)
-        ))
+        )) {
+            @Override
+            public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, @Nullable T entity, Consumer<Item> onBroken) {
+                return CopperEquipment.scaleDurabilityDamage(stack, amount, entity);
+            }
+        }
     );
 
     public static final DeferredItem<PickaxeItem> COPPER_PICKAXE = ITEMS.registerItem(
         "copper_pickaxe",
         properties -> new PickaxeItem(CopperToolTier.COPPER, properties.attributes(
             PickaxeItem.createAttributes(CopperToolTier.COPPER, 1, -2.8F)
-        ))
+        )) {
+            @Override
+            public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, @Nullable T entity, Consumer<Item> onBroken) {
+                return CopperEquipment.scaleDurabilityDamage(stack, amount, entity);
+            }
+        }
     );
 
     public static final DeferredItem<AxeItem> COPPER_AXE = ITEMS.registerItem(
         "copper_axe",
         properties -> new AxeItem(CopperToolTier.COPPER, properties.attributes(
             AxeItem.createAttributes(CopperToolTier.COPPER, 5, -3.1F)
-        ))
+        )) {
+            @Override
+            public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, @Nullable T entity, Consumer<Item> onBroken) {
+                return CopperEquipment.scaleDurabilityDamage(stack, amount, entity);
+            }
+        }
     );
 
     public static final DeferredItem<ShovelItem> COPPER_SHOVEL = ITEMS.registerItem(
         "copper_shovel",
         properties -> new ShovelItem(CopperToolTier.COPPER, properties.attributes(
             ShovelItem.createAttributes(CopperToolTier.COPPER, 1.5F, -3.0F)
-        ))
+        )) {
+            @Override
+            public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, @Nullable T entity, Consumer<Item> onBroken) {
+                return CopperEquipment.scaleDurabilityDamage(stack, amount, entity);
+            }
+        }
     );
 
     public static final DeferredItem<HoeItem> COPPER_HOE = ITEMS.registerItem(
         "copper_hoe",
         properties -> new HoeItem(CopperToolTier.COPPER, properties.attributes(
             HoeItem.createAttributes(CopperToolTier.COPPER, -2, -1.0F)
-        ))
+        )) {
+            @Override
+            public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, @Nullable T entity, Consumer<Item> onBroken) {
+                return CopperEquipment.scaleDurabilityDamage(stack, amount, entity);
+            }
+        }
     );
 
     public static final DeferredItem<ArmorItem> COPPER_HELMET = ITEMS.registerItem(

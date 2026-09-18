@@ -1,12 +1,15 @@
 package com.nullps1.copperworks.data;
 
 import com.nullps1.copperworks.Copperworks;
+import javax.annotation.Nullable;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 
 public final class CopperEquipment {
     private static final TagKey<Item> COPPER_EQUIPMENT = TagKey.create(
@@ -40,6 +43,49 @@ public final class CopperEquipment {
             case 3 -> "tooltip.copperworks.oxidized";
             default -> "tooltip.copperworks.fresh";
         });
+    }
+
+    public static double durabilityWearMultiplier(ItemStack stack) {
+        return switch (stage(stack)) {
+            case 1 -> 1.10D;
+            case 2 -> 1.25D;
+            case 3 -> 1.50D;
+            default -> 1.00D;
+        };
+    }
+
+    public static MutableComponent durabilityWearDescription(ItemStack stack) {
+        long percent = Math.round((durabilityWearMultiplier(stack) - 1.0D) * 100);
+        return percent == 0
+            ? Component.translatable("tooltip.copperworks.durability.normal")
+            : Component.translatable("tooltip.copperworks.durability.increased", percent);
+    }
+
+    // NeoForge calls damageItem before Unbreaking and before the creative-mode check.
+    public static int scaleDurabilityDamage(ItemStack stack, int amount, @Nullable LivingEntity entity) {
+        if (amount <= 0 || !isOxidizable(stack)
+            || (entity != null && (entity.level().isClientSide() || entity.hasInfiniteMaterials()))) {
+            return amount;
+        }
+        double multiplier = durabilityWearMultiplier(stack);
+        if (multiplier == 1.0D) {
+            return amount;
+        }
+        double exactDamage = Math.min(Integer.MAX_VALUE, amount * multiplier);
+        int damage = (int) exactDamage;
+        double remainder = exactDamage - damage;
+        if (remainder > 0) {
+            // Entity-less hurtAndBreak calls still run on the server; use its existing RNG.
+            var server = entity == null ? ServerLifecycleHooks.getCurrentServer() : null;
+            if (entity == null && server == null) {
+                return amount;
+            }
+            var random = entity != null ? entity.getRandom() : server.overworld().getRandom();
+            if (random.nextDouble() < remainder) {
+                damage++;
+            }
+        }
+        return damage;
     }
 
     public static void setStage(ItemStack stack, int stage) {

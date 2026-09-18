@@ -11,6 +11,8 @@
   "advancements.copperworks.age_of_copper.title": "Age of Copper",
   "advancements.copperworks.age_of_copper.description": "Obtain a piece of copper equipment",
   "tooltip.copperworks.fresh": "Fresh",
+  "tooltip.copperworks.durability.normal": "Durability Wear: Normal",
+  "tooltip.copperworks.durability.increased": "Durability Wear: +%s%%",
   "tooltip.copperworks.exposed": "Exposed",
   "tooltip.copperworks.weathered": "Weathered",
   "tooltip.copperworks.oxidized": "Oxidized",
@@ -21,7 +23,7 @@
   "advancements.copperworks.not_getting_any_older.description": "Wax a piece of Copperworks equipment",
   "commands.copperworks.not_equipment": "Hold Copperworks equipment in your main hand.",
   "commands.copperworks.oxidation_set": "Set oxidation stage to %s (%s).",
-  "commands.copperworks.oxidation_status": "Copper state: %s (%s), %s",
+  "commands.copperworks.oxidation_status": "Copper state: %s (%s), %s, %s",
   "commands.copperworks.state_unwaxed": "Unwaxed",
   "commands.copperworks.waxed": "Waxed the held equipment.",
   "commands.copperworks.unwaxed": "Removed wax from the held equipment."

@@ -59,7 +59,7 @@ public final class CopperworksCommands {
             ? "tooltip.copperworks.waxed" : "commands.copperworks.state_unwaxed");
         context.getSource().sendSuccess(() -> Component.translatable(
             "commands.copperworks.oxidation_status", CopperEquipment.stage(stack),
-            CopperEquipment.stageName(stack), waxState
+            CopperEquipment.stageName(stack), waxState, CopperEquipment.durabilityWearDescription(stack)
         ), false);
         return Command.SINGLE_SUCCESS;
     }

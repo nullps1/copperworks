@@ -124,6 +124,7 @@ public final class CopperEquipmentEvents {
             default -> ChatFormatting.GOLD;
         };
         event.getToolTip().add(CopperEquipment.stageName(stack).withStyle(color));
+        event.getToolTip().add(CopperEquipment.durabilityWearDescription(stack).withStyle(ChatFormatting.GRAY));
         if (CopperEquipment.isWaxed(stack)) {
             event.getToolTip().add(Component.translatable("tooltip.copperworks.waxed").withStyle(ChatFormatting.GRAY));
         }

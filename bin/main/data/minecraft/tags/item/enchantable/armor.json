@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "copperworks:copper_helmet",
+    "copperworks:copper_chestplate",
+    "copperworks:copper_leggings",
+    "copperworks:copper_boots"
+  ]
+}

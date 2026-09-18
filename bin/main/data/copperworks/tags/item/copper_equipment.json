@@ -1,0 +1,14 @@
+{
+  "replace": false,
+  "values": [
+    "copperworks:copper_sword",
+    "copperworks:copper_pickaxe",
+    "copperworks:copper_axe",
+    "copperworks:copper_shovel",
+    "copperworks:copper_hoe",
+    "copperworks:copper_helmet",
+    "copperworks:copper_chestplate",
+    "copperworks:copper_leggings",
+    "copperworks:copper_boots"
+  ]
+}

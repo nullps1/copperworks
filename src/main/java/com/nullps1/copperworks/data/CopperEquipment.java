@@ -2,7 +2,6 @@ package com.nullps1.copperworks.data;
 
 import com.nullps1.copperworks.Copperworks;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -10,7 +9,7 @@ import net.minecraft.world.item.ItemStack;
 public final class CopperEquipment {
     private static final TagKey<Item> COPPER_EQUIPMENT = TagKey.create(
         Registries.ITEM,
-        ResourceLocation.fromNamespaceAndPath(Copperworks.MOD_ID, "copper_equipment")
+        Copperworks.id("copper_equipment")
     );
     public static final int MAX_STAGE = 3;
     public static final int CHECK_INTERVAL = 600;

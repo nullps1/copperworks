@@ -7,18 +7,19 @@ import java.util.List;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.item.ItemPropertyFunction;
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 
-@EventBusSubscriber(modid = Copperworks.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+@Mod(value = Copperworks.MOD_ID, dist = Dist.CLIENT)
 public final class CopperworksClient {
-    private CopperworksClient() {
+    public CopperworksClient(IEventBus modEventBus) {
+        modEventBus.addListener(CopperworksClient::onClientSetup);
     }
 
-    @SubscribeEvent
-    public static void onClientSetup(FMLClientSetupEvent event) {
+    private static void onClientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
+            var propertyId = Copperworks.id("oxidation");
             // Keep stages 2 and 3: ClampedItemPropertyFunction would clamp them to 1.
             ItemPropertyFunction oxidation = (stack, level, entity, seed) -> CopperEquipment.stage(stack);
             for (var item : List.of(
@@ -26,7 +27,7 @@ public final class CopperworksClient {
                 ModItems.COPPER_SHOVEL, ModItems.COPPER_HOE, ModItems.COPPER_HELMET,
                 ModItems.COPPER_CHESTPLATE, ModItems.COPPER_LEGGINGS, ModItems.COPPER_BOOTS
             )) {
-                ItemProperties.register(item.get(), Copperworks.id("oxidation"), oxidation);
+                ItemProperties.register(item.get(), propertyId, oxidation);
             }
         });
     }

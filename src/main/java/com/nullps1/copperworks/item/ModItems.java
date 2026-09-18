@@ -1,19 +1,20 @@
 package com.nullps1.copperworks.item;
 
 import com.nullps1.copperworks.Copperworks;
-import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.AxeItem;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.HoeItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.item.SwordItem;
-import net.minecraft.world.item.CreativeModeTabs;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 public final class ModItems {
+    private static final int ARMOR_DURABILITY_MULTIPLIER = 12;
+
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Copperworks.MOD_ID);
 
     public static final DeferredItem<SwordItem> COPPER_SWORD = ITEMS.registerItem(
@@ -56,7 +57,7 @@ public final class ModItems {
         properties -> new CopperArmorItem(
             CopperArmorMaterial.COPPER,
             ArmorItem.Type.HELMET,
-            properties.durability(ArmorItem.Type.HELMET.getDurability(12))
+            properties.durability(ArmorItem.Type.HELMET.getDurability(ARMOR_DURABILITY_MULTIPLIER))
         )
     );
 
@@ -65,7 +66,7 @@ public final class ModItems {
         properties -> new CopperArmorItem(
             CopperArmorMaterial.COPPER,
             ArmorItem.Type.CHESTPLATE,
-            properties.durability(ArmorItem.Type.CHESTPLATE.getDurability(12))
+            properties.durability(ArmorItem.Type.CHESTPLATE.getDurability(ARMOR_DURABILITY_MULTIPLIER))
         )
     );
 
@@ -74,7 +75,7 @@ public final class ModItems {
         properties -> new CopperArmorItem(
             CopperArmorMaterial.COPPER,
             ArmorItem.Type.LEGGINGS,
-            properties.durability(ArmorItem.Type.LEGGINGS.getDurability(12))
+            properties.durability(ArmorItem.Type.LEGGINGS.getDurability(ARMOR_DURABILITY_MULTIPLIER))
         )
     );
 
@@ -83,7 +84,7 @@ public final class ModItems {
         properties -> new CopperArmorItem(
             CopperArmorMaterial.COPPER,
             ArmorItem.Type.BOOTS,
-            properties.durability(ArmorItem.Type.BOOTS.getDurability(12))
+            properties.durability(ArmorItem.Type.BOOTS.getDurability(ARMOR_DURABILITY_MULTIPLIER))
         )
     );
 

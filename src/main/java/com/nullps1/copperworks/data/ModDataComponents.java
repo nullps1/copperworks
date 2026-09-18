@@ -1,9 +1,9 @@
 package com.nullps1.copperworks.data;
 
-import com.nullps1.copperworks.Copperworks;
 import com.mojang.serialization.Codec;
-import net.minecraft.core.registries.Registries;
+import com.nullps1.copperworks.Copperworks;
 import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;

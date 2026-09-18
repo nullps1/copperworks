@@ -36,16 +36,16 @@ neoForge {
 
 sourceSets.main.resources.srcDir 'src/generated/resources'
 
+def modProperties = [
+    version: project.version,
+    mod_id: project.mod_id,
+    mod_name: project.mod_name
+]
+
 processResources {
-    inputs.property 'version', project.version
-    inputs.property 'mod_id', project.mod_id
-    inputs.property 'mod_name', project.mod_name
+    inputs.properties modProperties
 
     filesMatching('META-INF/neoforge.mods.toml') {
-        expand(
-            version: project.version,
-            mod_id: project.mod_id,
-            mod_name: project.mod_name
-        )
+        expand modProperties
     }
 }

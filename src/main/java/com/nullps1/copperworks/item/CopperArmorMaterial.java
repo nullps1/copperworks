@@ -3,15 +3,14 @@ package com.nullps1.copperworks.item;
 import com.nullps1.copperworks.Copperworks;
 import java.util.EnumMap;
 import java.util.List;
+import net.minecraft.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.Util;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 public final class CopperArmorMaterial {
@@ -33,7 +32,7 @@ public final class CopperArmorMaterial {
             12,
             SoundEvents.ARMOR_EQUIP_IRON,
             () -> Ingredient.of(Items.COPPER_INGOT),
-            List.of(new ArmorMaterial.Layer(ResourceLocation.fromNamespaceAndPath(Copperworks.MOD_ID, "copper"))),
+            List.of(new ArmorMaterial.Layer(Copperworks.id("copper"))),
             0.0F,
             0.0F
         )

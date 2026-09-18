@@ -1,7 +1,7 @@
 package com.nullps1.copperworks;
 
 import com.nullps1.copperworks.data.CopperEquipment;
-import com.nullps1.copperworks.data.ModDataComponents;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -16,7 +16,6 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
-import net.minecraft.network.chat.Component;
 
 public final class CopperEquipmentEvents {
     private CopperEquipmentEvents() {

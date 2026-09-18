@@ -1,4 +1,26 @@
 {
   "parent": "minecraft:item/handheld",
-  "textures": { "layer0": "copperworks:item/copper_sword" }
+  "textures": {
+    "layer0": "copperworks:item/copper_sword"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "copperworks:oxidation": 1
+      },
+      "model": "copperworks:item/copper_sword_exposed"
+    },
+    {
+      "predicate": {
+        "copperworks:oxidation": 2
+      },
+      "model": "copperworks:item/copper_sword_weathered"
+    },
+    {
+      "predicate": {
+        "copperworks:oxidation": 3
+      },
+      "model": "copperworks:item/copper_sword_oxidized"
+    }
+  ]
 }

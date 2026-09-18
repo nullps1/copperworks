@@ -53,7 +53,7 @@ public final class ModItems {
 
     public static final DeferredItem<ArmorItem> COPPER_HELMET = ITEMS.registerItem(
         "copper_helmet",
-        properties -> new ArmorItem(
+        properties -> new CopperArmorItem(
             CopperArmorMaterial.COPPER,
             ArmorItem.Type.HELMET,
             properties.durability(ArmorItem.Type.HELMET.getDurability(12))
@@ -62,7 +62,7 @@ public final class ModItems {
 
     public static final DeferredItem<ArmorItem> COPPER_CHESTPLATE = ITEMS.registerItem(
         "copper_chestplate",
-        properties -> new ArmorItem(
+        properties -> new CopperArmorItem(
             CopperArmorMaterial.COPPER,
             ArmorItem.Type.CHESTPLATE,
             properties.durability(ArmorItem.Type.CHESTPLATE.getDurability(12))
@@ -71,7 +71,7 @@ public final class ModItems {
 
     public static final DeferredItem<ArmorItem> COPPER_LEGGINGS = ITEMS.registerItem(
         "copper_leggings",
-        properties -> new ArmorItem(
+        properties -> new CopperArmorItem(
             CopperArmorMaterial.COPPER,
             ArmorItem.Type.LEGGINGS,
             properties.durability(ArmorItem.Type.LEGGINGS.getDurability(12))
@@ -80,7 +80,7 @@ public final class ModItems {
 
     public static final DeferredItem<ArmorItem> COPPER_BOOTS = ITEMS.registerItem(
         "copper_boots",
-        properties -> new ArmorItem(
+        properties -> new CopperArmorItem(
             CopperArmorMaterial.COPPER,
             ArmorItem.Type.BOOTS,
             properties.durability(ArmorItem.Type.BOOTS.getDurability(12))

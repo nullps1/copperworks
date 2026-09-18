@@ -1,32 +1,12 @@
-# Milestone 3 oxidation textures
+# Copper equipment oxidation textures
 
-The current item models intentionally continue to use the working fresh-copper textures until the state-aware item model resource format is finalized with the texture assets present. No missing texture references are loaded by the mod.
+All nine equipment items use `copperworks:oxidation`, registered during client setup,
+to select inventory/held models. The value comes from `CopperEquipment.stage(stack)`:
+0 = fresh, 1 = exposed, 2 = weathered, 3 = oxidized. Overrides are ordered 1, 2, 3
+so the highest matching threshold wins. State models use matching `_exposed`,
+`_weathered`, and `_oxidized` item textures.
 
-When visual state selection is added, provide these files. Item textures are expected to be 16x16 PNGs, matching the existing item textures:
-
-- `assets/copperworks/textures/item/copper_sword_exposed.png`
-- `assets/copperworks/textures/item/copper_sword_weathered.png`
-- `assets/copperworks/textures/item/copper_sword_oxidized.png`
-- `assets/copperworks/textures/item/copper_pickaxe_exposed.png`
-- `assets/copperworks/textures/item/copper_pickaxe_weathered.png`
-- `assets/copperworks/textures/item/copper_pickaxe_oxidized.png`
-- `assets/copperworks/textures/item/copper_axe_exposed.png`
-- `assets/copperworks/textures/item/copper_axe_weathered.png`
-- `assets/copperworks/textures/item/copper_axe_oxidized.png`
-- `assets/copperworks/textures/item/copper_shovel_exposed.png`
-- `assets/copperworks/textures/item/copper_shovel_weathered.png`
-- `assets/copperworks/textures/item/copper_shovel_oxidized.png`
-- `assets/copperworks/textures/item/copper_hoe_exposed.png`
-- `assets/copperworks/textures/item/copper_hoe_weathered.png`
-- `assets/copperworks/textures/item/copper_hoe_oxidized.png`
-
-Equipped armor uses the existing 64x32 UV-mapped layers. Provide:
-
-- `assets/copperworks/textures/models/armor/copper_exposed_layer_1.png`
-- `assets/copperworks/textures/models/armor/copper_weathered_layer_1.png`
-- `assets/copperworks/textures/models/armor/copper_oxidized_layer_1.png`
-- `assets/copperworks/textures/models/armor/copper_exposed_layer_2.png`
-- `assets/copperworks/textures/models/armor/copper_weathered_layer_2.png`
-- `assets/copperworks/textures/models/armor/copper_oxidized_layer_2.png`
-
-The existing `copper_layer_1.png` and `copper_layer_2.png` must remain unchanged.
+`CopperArmorItem.getArmorTexture` reads the equipped stack using the same stage helper.
+It selects `textures/models/armor/copper_layer_1{suffix}.png` for outer armor and
+`copper_layer_2{suffix}.png` for leggings (the inner model). Fresh uses an empty suffix.
+Waxing does not change texture selection. Registry IDs and gameplay are unchanged.

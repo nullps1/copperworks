@@ -21,7 +21,7 @@
       "conditions": {
         "items": [
           {
-            "items": "copperworks:copper_equipment"
+            "items": "#copperworks:copper_equipment"
           }
         ]
       }

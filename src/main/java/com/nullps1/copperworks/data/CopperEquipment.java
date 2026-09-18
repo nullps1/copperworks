@@ -2,6 +2,8 @@ package com.nullps1.copperworks.data;
 
 import com.nullps1.copperworks.Copperworks;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -29,6 +31,15 @@ public final class CopperEquipment {
 
     public static boolean isWaxed(ItemStack stack) {
         return stack.getOrDefault(ModDataComponents.COPPER_WAXED, false);
+    }
+
+    public static MutableComponent stageName(ItemStack stack) {
+        return Component.translatable(switch (stage(stack)) {
+            case 1 -> "tooltip.copperworks.exposed";
+            case 2 -> "tooltip.copperworks.weathered";
+            case 3 -> "tooltip.copperworks.oxidized";
+            default -> "tooltip.copperworks.fresh";
+        });
     }
 
     public static void setStage(ItemStack stack, int stage) {

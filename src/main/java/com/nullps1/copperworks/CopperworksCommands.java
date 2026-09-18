@@ -22,6 +22,8 @@ public final class CopperworksCommands {
         event.getDispatcher().register(Commands.literal("copperworks")
             .requires(source -> source.hasPermission(2))
             .then(Commands.literal("oxidation")
+                .then(Commands.literal("status")
+                    .executes(CopperworksCommands::status))
                 .then(Commands.literal("set")
                     .then(Commands.argument("stage", IntegerArgumentType.integer(0, CopperEquipment.MAX_STAGE))
                         .executes(context -> setStage(context, IntegerArgumentType.getInteger(context, "stage")))))
@@ -41,7 +43,24 @@ public final class CopperworksCommands {
             return 0;
         }
         CopperEquipment.setStage(stack, stage);
-        context.getSource().sendSuccess(() -> Component.translatable("commands.copperworks.oxidation_set", stage), true);
+        context.getSource().sendSuccess(() -> Component.translatable(
+            "commands.copperworks.oxidation_set", stage, CopperEquipment.stageName(stack)
+        ), true);
+        return Command.SINGLE_SUCCESS;
+    }
+
+    private static int status(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        ItemStack stack = context.getSource().getPlayerOrException().getMainHandItem();
+        if (!CopperEquipment.isOxidizable(stack)) {
+            context.getSource().sendFailure(Component.translatable("commands.copperworks.not_equipment"));
+            return 0;
+        }
+        Component waxState = Component.translatable(CopperEquipment.isWaxed(stack)
+            ? "tooltip.copperworks.waxed" : "commands.copperworks.state_unwaxed");
+        context.getSource().sendSuccess(() -> Component.translatable(
+            "commands.copperworks.oxidation_status", CopperEquipment.stage(stack),
+            CopperEquipment.stageName(stack), waxState
+        ), false);
         return Command.SINGLE_SUCCESS;
     }
 

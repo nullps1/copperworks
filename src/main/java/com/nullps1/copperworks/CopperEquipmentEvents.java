@@ -1,6 +1,7 @@
 package com.nullps1.copperworks;
 
 import com.nullps1.copperworks.data.CopperEquipment;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -117,14 +118,14 @@ public final class CopperEquipmentEvents {
         if (!CopperEquipment.isOxidizable(stack)) {
             return;
         }
-        switch (CopperEquipment.stage(stack)) {
-            case 1 -> event.getToolTip().add(Component.translatable("tooltip.copperworks.exposed"));
-            case 2 -> event.getToolTip().add(Component.translatable("tooltip.copperworks.weathered"));
-            case 3 -> event.getToolTip().add(Component.translatable("tooltip.copperworks.oxidized"));
-            default -> { }
-        }
+        ChatFormatting color = switch (CopperEquipment.stage(stack)) {
+            case 2 -> ChatFormatting.DARK_AQUA;
+            case 3 -> ChatFormatting.AQUA;
+            default -> ChatFormatting.GOLD;
+        };
+        event.getToolTip().add(CopperEquipment.stageName(stack).withStyle(color));
         if (CopperEquipment.isWaxed(stack)) {
-            event.getToolTip().add(Component.translatable("tooltip.copperworks.waxed"));
+            event.getToolTip().add(Component.translatable("tooltip.copperworks.waxed").withStyle(ChatFormatting.GRAY));
         }
     }
 

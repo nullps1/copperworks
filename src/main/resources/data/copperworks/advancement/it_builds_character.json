@@ -1,0 +1,15 @@
+{
+  "parent": "copperworks:age_of_copper",
+  "display": {
+    "icon": { "id": "copperworks:copper_pickaxe" },
+    "title": { "translate": "advancements.copperworks.it_builds_character.title" },
+    "description": { "translate": "advancements.copperworks.it_builds_character.description" },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "fully_oxidized": { "trigger": "minecraft:impossible" }
+  }
+}

@@ -1,0 +1,51 @@
+plugins {
+    id 'java-library'
+    id 'net.neoforged.moddev' version '2.0.147'
+}
+
+group = project.mod_group_id
+version = project.mod_version
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
+repositories {
+    mavenCentral()
+}
+
+neoForge {
+    version = project.neo_version
+
+    runs {
+        client {
+            client()
+        }
+        server {
+            server()
+        }
+        data {
+            data()
+        }
+    }
+
+    mods {
+        copperworks {
+            sourceSet sourceSets.main
+        }
+    }
+}
+
+sourceSets.main.resources.srcDir 'src/generated/resources'
+
+processResources {
+    inputs.property 'version', project.version
+    inputs.property 'mod_id', project.mod_id
+    inputs.property 'mod_name', project.mod_name
+
+    filesMatching('META-INF/neoforge.mods.toml') {
+        expand(
+            version: project.version,
+            mod_id: project.mod_id,
+            mod_name: project.mod_name
+        )
+    }
+}

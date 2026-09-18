@@ -1,0 +1,15 @@
+{
+  "parent": "copperworks:age_of_copper",
+  "display": {
+    "icon": { "id": "minecraft:honeycomb" },
+    "title": { "translate": "advancements.copperworks.not_getting_any_older.title" },
+    "description": { "translate": "advancements.copperworks.not_getting_any_older.description" },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "wax_equipment": { "trigger": "minecraft:impossible" }
+  }
+}

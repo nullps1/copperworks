@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "copperworks:copper_pickaxe",
+    "copperworks:copper_axe",
+    "copperworks:copper_shovel",
+    "copperworks:copper_hoe"
+  ]
+}

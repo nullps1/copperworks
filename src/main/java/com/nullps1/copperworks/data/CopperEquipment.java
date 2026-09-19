@@ -7,8 +7,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.SwordItem;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 
 public final class CopperEquipment {
@@ -52,6 +54,42 @@ public final class CopperEquipment {
             case 3 -> 1.50D;
             default -> 1.00D;
         };
+    }
+
+    public static boolean hasToolPerformance(ItemStack stack) {
+        return isOxidizable(stack) && (stack.getItem() instanceof DiggerItem || stack.getItem() instanceof SwordItem);
+    }
+
+    public static double miningSpeedMultiplier(ItemStack stack) {
+        return switch (stage(stack)) {
+            case 1 -> 0.95D;
+            case 2 -> 0.90D;
+            case 3 -> 0.80D;
+            default -> 1.00D;
+        };
+    }
+
+    public static double attackDamageMultiplier(ItemStack stack) {
+        return switch (stage(stack)) {
+            case 1 -> 0.97D;
+            case 2 -> 0.93D;
+            case 3 -> 0.85D;
+            default -> 1.00D;
+        };
+    }
+
+    public static MutableComponent miningSpeedDescription(ItemStack stack) {
+        long percent = Math.round((1.0D - miningSpeedMultiplier(stack)) * 100);
+        return percent == 0
+            ? Component.translatable("tooltip.copperworks.mining.normal")
+            : Component.translatable("tooltip.copperworks.mining.reduced", percent);
+    }
+
+    public static MutableComponent attackDamageDescription(ItemStack stack) {
+        long percent = Math.round((1.0D - attackDamageMultiplier(stack)) * 100);
+        return percent == 0
+            ? Component.translatable("tooltip.copperworks.attack.normal")
+            : Component.translatable("tooltip.copperworks.attack.reduced", percent);
     }
 
     public static MutableComponent durabilityWearDescription(ItemStack stack) {

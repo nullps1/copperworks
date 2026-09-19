@@ -57,10 +57,16 @@ public final class CopperworksCommands {
         }
         Component waxState = Component.translatable(CopperEquipment.isWaxed(stack)
             ? "tooltip.copperworks.waxed" : "commands.copperworks.state_unwaxed");
-        context.getSource().sendSuccess(() -> Component.translatable(
+        var status = Component.translatable(
             "commands.copperworks.oxidation_status", CopperEquipment.stage(stack),
             CopperEquipment.stageName(stack), waxState, CopperEquipment.durabilityWearDescription(stack)
-        ), false);
+        );
+        if (CopperEquipment.hasToolPerformance(stack)) {
+            status = Component.translatable("commands.copperworks.tool_status", status,
+                CopperEquipment.miningSpeedDescription(stack), CopperEquipment.attackDamageDescription(stack));
+        }
+        Component message = status;
+        context.getSource().sendSuccess(() -> message, false);
         return Command.SINGLE_SUCCESS;
     }
 

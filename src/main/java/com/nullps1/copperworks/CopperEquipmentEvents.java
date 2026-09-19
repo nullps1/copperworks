@@ -3,23 +3,60 @@ package com.nullps1.copperworks;
 import com.nullps1.copperworks.data.CopperEquipment;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.EquipmentSlotGroup;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.SwordItem;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.event.ItemAttributeModifierEvent;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 public final class CopperEquipmentEvents {
+    private static final ResourceLocation OXIDATION_ATTACK_DAMAGE = Copperworks.id("oxidation_attack_damage");
+
     private CopperEquipmentEvents() {
+    }
+
+    @SubscribeEvent
+    public static void onBreakSpeed(PlayerEvent.BreakSpeed event) {
+        ItemStack stack = event.getEntity().getMainHandItem();
+        if (!CopperEquipment.hasToolPerformance(stack) || event.getEntity().hasInfiniteMaterials()) {
+            return;
+        }
+        // Swords only have meaningful mining performance on their native efficient blocks.
+        if (stack.getItem() instanceof SwordItem && stack.getDestroySpeed(event.getState()) <= 1.0F) {
+            return;
+        }
+        event.setNewSpeed((float) (event.getNewSpeed() * CopperEquipment.miningSpeedMultiplier(stack)));
+    }
+
+    @SubscribeEvent
+    public static void onItemAttributes(ItemAttributeModifierEvent event) {
+        ItemStack stack = event.getItemStack();
+        if (!CopperEquipment.hasToolPerformance(stack)) {
+            return;
+        }
+        double multiplier = CopperEquipment.attackDamageMultiplier(stack);
+        if (multiplier != 1.0D) {
+            // A stable ID lets vanilla remove the old stack's modifier when equipment/components change.
+            event.replaceModifier(Attributes.ATTACK_DAMAGE, new AttributeModifier(
+                OXIDATION_ATTACK_DAMAGE, multiplier - 1.0D, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL
+            ), EquipmentSlotGroup.MAINHAND);
+        }
     }
 
     @SubscribeEvent
@@ -125,6 +162,10 @@ public final class CopperEquipmentEvents {
         };
         event.getToolTip().add(CopperEquipment.stageName(stack).withStyle(color));
         event.getToolTip().add(CopperEquipment.durabilityWearDescription(stack).withStyle(ChatFormatting.GRAY));
+        if (CopperEquipment.hasToolPerformance(stack)) {
+            event.getToolTip().add(CopperEquipment.miningSpeedDescription(stack).withStyle(ChatFormatting.GRAY));
+            event.getToolTip().add(CopperEquipment.attackDamageDescription(stack).withStyle(ChatFormatting.GRAY));
+        }
         if (CopperEquipment.isWaxed(stack)) {
             event.getToolTip().add(Component.translatable("tooltip.copperworks.waxed").withStyle(ChatFormatting.GRAY));
         }

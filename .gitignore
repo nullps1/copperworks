@@ -7,3 +7,8 @@ runs/
 .classpath
 .project
 .settings/
+bin/
+tempjar/
+.eclipse/
+.vscode/
+*.log

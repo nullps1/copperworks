@@ -7,18 +7,21 @@ modId="${mod_id}"
 version="${version}"
 displayName="${mod_name}"
 authors="nullps1"
-description='''Copperworks adds a vanilla-style copper tool set.'''
+description='''Copper tools, weapons, and armor that oxidize as you use them. Wax equipment to preserve its stage or scrape it clean with an axe. Includes changing textures, configurable oxidation penalties, and advancements.'''
+
+[features.${mod_id}]
+javaVersion="[21,)"
 
 [[dependencies.${mod_id}]]
 modId="neoforge"
 type="required"
-versionRange="[21.1,)"
+versionRange="[${neo_version},21.2)"
 ordering="NONE"
 side="BOTH"
 
 [[dependencies.${mod_id}]]
 modId="minecraft"
 type="required"
-versionRange="[1.21.1,1.22)"
+versionRange="[${minecraft_version}]"
 ordering="NONE"
 side="BOTH"

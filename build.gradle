@@ -8,6 +8,11 @@ version = project.mod_version
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
+tasks.withType(AbstractArchiveTask).configureEach {
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
+}
+
 repositories {
     mavenCentral()
 }
@@ -39,7 +44,9 @@ sourceSets.main.resources.srcDir 'src/generated/resources'
 def modProperties = [
     version: project.version,
     mod_id: project.mod_id,
-    mod_name: project.mod_name
+    mod_name: project.mod_name,
+    minecraft_version: project.minecraft_version,
+    neo_version: project.neo_version
 ]
 
 processResources {

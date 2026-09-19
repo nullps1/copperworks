@@ -1,6 +1,8 @@
 package com.nullps1.copperworks.data;
 
 import com.nullps1.copperworks.Copperworks;
+import com.nullps1.copperworks.CopperworksConfig;
+import com.nullps1.copperworks.item.CopperArmorItem;
 import javax.annotation.Nullable;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -19,9 +21,6 @@ public final class CopperEquipment {
         Copperworks.id("copper_equipment")
     );
     public static final int MAX_STAGE = 3;
-    public static final int CHECK_INTERVAL = 600;
-    public static final double BASE_CHANCE = 0.0025D;
-    public static final double WET_MULTIPLIER = 3.0D;
 
     private CopperEquipment() {
     }
@@ -48,12 +47,7 @@ public final class CopperEquipment {
     }
 
     public static double durabilityWearMultiplier(ItemStack stack) {
-        return switch (stage(stack)) {
-            case 1 -> 1.10D;
-            case 2 -> 1.25D;
-            case 3 -> 1.50D;
-            default -> 1.00D;
-        };
+        return CopperworksConfig.DURABILITY.multiplier(stage(stack));
     }
 
     public static boolean hasToolPerformance(ItemStack stack) {
@@ -61,42 +55,55 @@ public final class CopperEquipment {
     }
 
     public static double miningSpeedMultiplier(ItemStack stack) {
-        return switch (stage(stack)) {
-            case 1 -> 0.95D;
-            case 2 -> 0.90D;
-            case 3 -> 0.80D;
-            default -> 1.00D;
-        };
+        return CopperworksConfig.MINING.multiplier(stage(stack));
     }
 
     public static double attackDamageMultiplier(ItemStack stack) {
-        return switch (stage(stack)) {
-            case 1 -> 0.97D;
-            case 2 -> 0.93D;
-            case 3 -> 0.85D;
-            default -> 1.00D;
-        };
+        return CopperworksConfig.COMBAT.multiplier(stage(stack));
+    }
+
+    public static boolean hasArmorDefense(ItemStack stack) {
+        return isOxidizable(stack) && stack.getItem() instanceof CopperArmorItem;
+    }
+
+    public static double armorDefenseMultiplier(ItemStack stack) {
+        return CopperworksConfig.ARMOR.multiplier(stage(stack));
+    }
+
+    public static int oxidationCheckInterval() {
+        return CopperworksConfig.value(CopperworksConfig.CHECK_INTERVAL);
+    }
+
+    public static double oxidationBaseChance() {
+        return CopperworksConfig.value(CopperworksConfig.BASE_CHANCE);
+    }
+
+    public static double oxidationWetMultiplier() {
+        return CopperworksConfig.value(CopperworksConfig.WET_MULTIPLIER);
+    }
+
+    public static MutableComponent armorDefenseDescription(ItemStack stack) {
+        return multiplierDescription("armor", armorDefenseMultiplier(stack));
     }
 
     public static MutableComponent miningSpeedDescription(ItemStack stack) {
-        long percent = Math.round((1.0D - miningSpeedMultiplier(stack)) * 100);
-        return percent == 0
-            ? Component.translatable("tooltip.copperworks.mining.normal")
-            : Component.translatable("tooltip.copperworks.mining.reduced", percent);
+        return multiplierDescription("mining", miningSpeedMultiplier(stack));
     }
 
     public static MutableComponent attackDamageDescription(ItemStack stack) {
-        long percent = Math.round((1.0D - attackDamageMultiplier(stack)) * 100);
-        return percent == 0
-            ? Component.translatable("tooltip.copperworks.attack.normal")
-            : Component.translatable("tooltip.copperworks.attack.reduced", percent);
+        return multiplierDescription("attack", attackDamageMultiplier(stack));
     }
 
     public static MutableComponent durabilityWearDescription(ItemStack stack) {
-        long percent = Math.round((durabilityWearMultiplier(stack) - 1.0D) * 100);
+        return multiplierDescription("durability", durabilityWearMultiplier(stack));
+    }
+
+    private static MutableComponent multiplierDescription(String system, double multiplier) {
+        long percent = Math.round((multiplier - 1.0D) * 100);
+        String key = "tooltip.copperworks." + system;
         return percent == 0
-            ? Component.translatable("tooltip.copperworks.durability.normal")
-            : Component.translatable("tooltip.copperworks.durability.increased", percent);
+            ? Component.translatable(key + ".normal")
+            : Component.translatable(key + (percent > 0 ? ".increased" : ".reduced"), Math.abs(percent));
     }
 
     // NeoForge calls damageItem before Unbreaking and before the creative-mode check.

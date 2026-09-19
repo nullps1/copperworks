@@ -5,14 +5,19 @@ import com.nullps1.copperworks.item.CopperArmorMaterial;
 import com.nullps1.copperworks.item.ModItems;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.common.NeoForge;
 
 @Mod(Copperworks.MOD_ID)
 public final class Copperworks {
     public static final String MOD_ID = "copperworks";
 
-    public Copperworks(IEventBus modEventBus) {
+    public Copperworks(IEventBus modEventBus, ModContainer modContainer) {
+        modContainer.registerConfig(ModConfig.Type.SERVER, CopperworksConfig.SPEC);
+        modEventBus.addListener(CopperworksConfig::onConfigLoading);
+        modEventBus.addListener(CopperworksConfig::onConfigReloading);
         CopperArmorMaterial.ARMOR_MATERIALS.register(modEventBus);
         ModDataComponents.DATA_COMPONENTS.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);

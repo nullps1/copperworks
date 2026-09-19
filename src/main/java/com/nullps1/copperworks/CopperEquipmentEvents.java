@@ -1,6 +1,8 @@
 package com.nullps1.copperworks;
 
 import com.nullps1.copperworks.data.CopperEquipment;
+import com.nullps1.copperworks.item.CopperArmorItem;
+import java.util.List;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -47,6 +49,21 @@ public final class CopperEquipmentEvents {
     @SubscribeEvent
     public static void onItemAttributes(ItemAttributeModifierEvent event) {
         ItemStack stack = event.getItemStack();
+        if (CopperEquipment.hasArmorDefense(stack)) {
+            CopperArmorItem armor = (CopperArmorItem) stack.getItem();
+            EquipmentSlotGroup slot = EquipmentSlotGroup.bySlot(armor.getEquipmentSlot());
+            double multiplier = CopperEquipment.armorDefenseMultiplier(stack);
+            // Replace each piece's own additive defense, retaining vanilla's stable ID and exact slot.
+            // Do not multiply the wearer's total armor or touch toughness/knockback resistance.
+            for (var entry : List.copyOf(event.getModifiers())) {
+                if (entry.attribute().equals(Attributes.ARMOR) && entry.slot() == slot
+                    && entry.modifier().operation() == AttributeModifier.Operation.ADD_VALUE) {
+                    event.replaceModifier(Attributes.ARMOR, new AttributeModifier(entry.modifier().id(),
+                        entry.modifier().amount() * multiplier, entry.modifier().operation()), slot);
+                }
+            }
+            return;
+        }
         if (!CopperEquipment.hasToolPerformance(stack)) {
             return;
         }
@@ -62,7 +79,7 @@ public final class CopperEquipmentEvents {
     @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent.Post event) {
         Player player = event.getEntity();
-        if (player.level().isClientSide() || player.tickCount % CopperEquipment.CHECK_INTERVAL != 0) {
+        if (player.level().isClientSide() || player.tickCount % CopperEquipment.oxidationCheckInterval() != 0) {
             return;
         }
 
@@ -89,7 +106,7 @@ public final class CopperEquipmentEvents {
 
     private static double oxidationChance(Player player) {
         boolean wet = player.isInWater() || player.isSwimming() || player.level().isRainingAt(player.blockPosition());
-        return CopperEquipment.BASE_CHANCE * (wet ? CopperEquipment.WET_MULTIPLIER : 1.0D);
+        return CopperEquipment.oxidationBaseChance() * (wet ? CopperEquipment.oxidationWetMultiplier() : 1.0D);
     }
 
     @SubscribeEvent
@@ -162,6 +179,9 @@ public final class CopperEquipmentEvents {
         };
         event.getToolTip().add(CopperEquipment.stageName(stack).withStyle(color));
         event.getToolTip().add(CopperEquipment.durabilityWearDescription(stack).withStyle(ChatFormatting.GRAY));
+        if (CopperEquipment.hasArmorDefense(stack)) {
+            event.getToolTip().add(CopperEquipment.armorDefenseDescription(stack).withStyle(ChatFormatting.GRAY));
+        }
         if (CopperEquipment.hasToolPerformance(stack)) {
             event.getToolTip().add(CopperEquipment.miningSpeedDescription(stack).withStyle(ChatFormatting.GRAY));
             event.getToolTip().add(CopperEquipment.attackDamageDescription(stack).withStyle(ChatFormatting.GRAY));

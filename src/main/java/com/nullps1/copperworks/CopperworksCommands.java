@@ -21,6 +21,7 @@ public final class CopperworksCommands {
     public static void register(RegisterCommandsEvent event) {
         event.getDispatcher().register(Commands.literal("copperworks")
             .requires(source -> source.hasPermission(2))
+            .then(Commands.literal("config").executes(CopperworksCommands::config))
             .then(Commands.literal("oxidation")
                 .then(Commands.literal("status")
                     .executes(CopperworksCommands::status))
@@ -64,10 +65,32 @@ public final class CopperworksCommands {
         if (CopperEquipment.hasToolPerformance(stack)) {
             status = Component.translatable("commands.copperworks.tool_status", status,
                 CopperEquipment.miningSpeedDescription(stack), CopperEquipment.attackDamageDescription(stack));
+        } else if (CopperEquipment.hasArmorDefense(stack)) {
+            status = Component.translatable("commands.copperworks.armor_status", status,
+                CopperEquipment.armorDefenseDescription(stack));
         }
         Component message = status;
         context.getSource().sendSuccess(() -> message, false);
         return Command.SINGLE_SUCCESS;
+    }
+
+    private static int config(CommandContext<CommandSourceStack> context) {
+        var source = context.getSource();
+        source.sendSuccess(() -> Component.translatable("commands.copperworks.config.oxidation",
+            CopperEquipment.oxidationCheckInterval(), CopperEquipment.oxidationBaseChance(),
+            CopperEquipment.oxidationWetMultiplier()), false);
+        configGroup(source, "durability", CopperworksConfig.DURABILITY);
+        configGroup(source, "mining", CopperworksConfig.MINING);
+        configGroup(source, "combat", CopperworksConfig.COMBAT);
+        configGroup(source, "armor", CopperworksConfig.ARMOR);
+        return Command.SINGLE_SUCCESS;
+    }
+
+    private static void configGroup(CommandSourceStack source, String name, CopperworksConfig.Multipliers group) {
+        source.sendSuccess(() -> Component.translatable("commands.copperworks.config.multipliers",
+            Component.translatable("commands.copperworks.config." + name), CopperworksConfig.value(group.enabled),
+            CopperworksConfig.value(group.stages.get(0)), CopperworksConfig.value(group.stages.get(1)),
+            CopperworksConfig.value(group.stages.get(2)), CopperworksConfig.value(group.stages.get(3))), false);
     }
 
     private static int setWax(CommandContext<CommandSourceStack> context, boolean waxed) throws CommandSyntaxException {
